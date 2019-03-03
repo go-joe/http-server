@@ -1,9 +1,6 @@
 module github.com/go-joe/http-server
 
 require (
-	github.com/go-joe/joe v0.0.0
-	github.com/pkg/errors v0.8.1
+	github.com/go-joe/joe v0.1.0
 	go.uber.org/zap v1.9.1
 )
-
-replace github.com/go-joe/joe => ../joe

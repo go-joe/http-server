@@ -2,11 +2,12 @@ package joehttp
 
 import (
 	"context"
-	"github.com/go-joe/joe"
-	"go.uber.org/zap"
 	"io/ioutil"
 	"net/http"
 	"time"
+
+	"github.com/go-joe/joe"
+	"go.uber.org/zap"
 )
 
 type server struct {

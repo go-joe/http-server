@@ -71,6 +71,7 @@ func (s *server) HTTPHandler(_ http.ResponseWriter, r *http.Request) {
 	)
 
 	event := RequestEvent{
+		Header:     r.Header,
 		Method:     r.Method,
 		URL:        r.URL,
 		RemoteAddr: r.RemoteAddr,

@@ -1,8 +1,12 @@
 package joehttp
 
-import "net/url"
+import (
+	"net/http"
+	"net/url"
+)
 
 type RequestEvent struct {
+	Header     http.Header
 	Method     string
 	URL        *url.URL
 	RemoteAddr string

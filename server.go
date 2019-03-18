@@ -17,7 +17,7 @@ type server struct {
 }
 
 func Server(path string) joe.Module {
-	return func(conf *joe.Config) error {
+	return joe.ModuleFunc(func(conf *joe.Config) error {
 		logger := conf.Logger("http")
 		events := conf.EventEmitter()
 		server, err := newServer(path, events, logger)
@@ -31,7 +31,7 @@ func Server(path string) joe.Module {
 		})
 
 		return nil
-	}
+	})
 }
 
 func newServer(addr string, events joe.EventEmitter, logger *zap.Logger) (*server, error) {

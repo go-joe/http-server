@@ -4,29 +4,52 @@ import (
 	"context"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"time"
 
 	"github.com/go-joe/joe"
 	"go.uber.org/zap"
 )
 
+// RequestEvent corresponds to an HTTP request that was received by the server.
+type RequestEvent struct {
+	Header     http.Header
+	Method     string
+	URL        *url.URL
+	RemoteAddr string
+	Body       []byte
+}
+
 type server struct {
 	http   *http.Server
 	logger *zap.Logger
+	conf   config
 	events joe.EventEmitter
 }
 
-func Server(path string) joe.Module {
-	return joe.ModuleFunc(func(conf *joe.Config) error {
-		logger := conf.Logger("http")
-		events := conf.EventEmitter()
-		server, err := newServer(path, events, logger)
+// Server returns a joe Module that runs an HTTP server to receive HTTP requests
+// and emit them as events. This Module is mainly meant to be used to integrate
+// a Bot with other systems that send events via HTTP (e.g. pull requests on GitHub).
+func Server(path string, opts ...Option) joe.Module {
+	return joe.ModuleFunc(func(joeConf *joe.Config) error {
+		conf, err := newConf(path, joeConf, opts)
 		if err != nil {
 			return err
 		}
 
-		go server.Run()
-		conf.RegisterHandler(func(joe.ShutdownEvent) {
+		events := joeConf.EventEmitter()
+		server := newServer(conf, events)
+
+		server.logger.Info("Starting HTTP server", zap.String("addr", server.http.Addr))
+		started := make(chan bool)
+		go func() {
+			started <- true
+			server.Run()
+		}()
+
+		<-started
+
+		joeConf.RegisterHandler(func(joe.ShutdownEvent) {
 			server.Shutdown()
 		})
 
@@ -34,35 +57,42 @@ func Server(path string) joe.Module {
 	})
 }
 
-func newServer(addr string, events joe.EventEmitter, logger *zap.Logger) (*server, error) {
+func newServer(conf config, events joe.EventEmitter) *server {
 	srv := &server{
-		logger: logger,
+		logger: conf.logger,
 		events: events,
+		conf:   conf,
 	}
 
 	srv.http = &http.Server{
-		Addr:              addr,
-		Handler:           http.HandlerFunc(srv.HTTPHandler),
-		ErrorLog:          zap.NewStdLog(logger),
-		TLSConfig:         nil, // TODO
-		ReadTimeout:       0,   // TODO
-		ReadHeaderTimeout: 0,   // TODO
-		WriteTimeout:      0,   // TODO
-		IdleTimeout:       0,   // TODO
-		MaxHeaderBytes:    0,   // TODO
+		Addr:         conf.listenAddr,
+		Handler:      http.HandlerFunc(srv.HTTPHandler),
+		ErrorLog:     zap.NewStdLog(conf.logger),
+		TLSConfig:    conf.tlsConf,
+		ReadTimeout:  conf.readTimeout,
+		WriteTimeout: conf.writeTimeout,
 	}
 
-	return srv, nil
+	return srv
 }
 
+// Run starts the HTTP server to handle any incoming requests on the listen
+// address that was configured.
 func (s *server) Run() {
-	s.logger.Info("Starting HTTP server", zap.String("addr", s.http.Addr))
-	err := s.http.ListenAndServe()
+	var err error
+	if s.conf.certFile == "" {
+		err = s.http.ListenAndServe()
+	} else {
+		err = s.http.ListenAndServeTLS(s.conf.certFile, s.conf.keyFile)
+	}
+
 	if err != nil && err != http.ErrServerClosed {
 		s.logger.Error("Failed to listen and serve requests", zap.Error(err)) // TODO: we want to see this error at startup!
 	}
 }
 
+// HTTPHandler receives any incoming requests and emits them as events to the
+// bots Brain.
 func (s *server) HTTPHandler(_ http.ResponseWriter, r *http.Request) {
 	s.logger.Debug("Received HTTP request",
 		zap.String("method", r.Method),
@@ -88,6 +118,8 @@ func (s *server) HTTPHandler(_ http.ResponseWriter, r *http.Request) {
 	s.events.Emit(event)
 }
 
+// Shutdown gracefully shuts down the HTTP server without interrupting any
+// active connections.
 func (s *server) Shutdown() {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()

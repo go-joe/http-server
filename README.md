@@ -16,25 +16,51 @@ This repository contains a module for the [Joe Bot library][joe].
 ## Getting Started
 
 Joe is packaged using the new [Go modules][go-modules]. Therefore the recommended
-installation is by adding joe and all used modules to your `go.mod` file like this: 
+installation method is to add the adapter to your `go.mod` via:
 
 ```
-module github.com/go-joe/example-bot
+require github.com/go-joe/http-server v0.3.0
+```
 
-require (
-	github.com/go-joe/joe v0.4.0
-	github.com/go-joe/http-server v0.3.0
-	…
-)
+If you do not use modules yet or you want to hack on the code you can also go get it directly:
+
+```bash
+go get github.com/go-joe/http-server
 ```
 
 ### Example usage
 
-TODO
+In order to let your bot listen to HTTP requests you should pass the `http.Server(…)`
+module when creating a new bot:
+
+```go
+package main
+
+import (
+	"github.com/go-joe/joe"
+	"github.com/go-joe/http-server"
+)
+
+func main() {
+	b := joe.New("example-bot",
+		joehttp.Server("localhost:12345"),
+		…
+    )
+	
+	err := b.Run()
+	if err != nil {
+		b.Logger.Fatal(err.Error())
+	}
+}
+```
+
+When the server receives a request, it will emit it to the bots brain as `joehttp.RequestEvent`.
 
 ## Built With
 
 * [zap](https://github.com/uber-go/zap) - Blazing fast, structured, leveled logging in Go
+* [pkg/errors](https://github.com/pkg/errors) - Simple error handling primitives
+* [testify](https://github.com/stretchr/testify) - A simple unit test library
 
 ## Contributing
 

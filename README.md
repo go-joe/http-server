@@ -59,6 +59,7 @@ When the server receives a request, it will emit it to the bots brain as `joehtt
 ## Built With
 
 * [zap](https://github.com/uber-go/zap) - Blazing fast, structured, leveled logging in Go
+* [pkg/errors](https://github.com/pkg/errors) - Simple error handling primitives
 * [testify](https://github.com/stretchr/testify) - A simple unit test library
 
 ## Contributing

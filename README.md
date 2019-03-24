@@ -45,7 +45,7 @@ func main() {
 	b := joe.New("example-bot",
 		joehttp.Server("localhost:12345"),
 		…
-    )
+	)
 	
 	err := b.Run()
 	if err != nil {

@@ -15,8 +15,6 @@ Nothing so far
 - Update to the changed Module interface of joe v0.4.0
 
 ## [v0.2.0] - 2019-03-10
-
-### Changed
 - Add HTTP headers to emitted `RequestEvent`
 
 ## [v0.1.0] - 2019-03-03

@@ -31,7 +31,7 @@ func newConf(listenAddr string, joeConf *joe.Config, opts []Option) (config, err
 	}
 
 	if conf.logger == nil {
-		conf.logger = joeConf.Logger("slack")
+		conf.logger = joeConf.Logger("http")
 	}
 
 	return conf, nil

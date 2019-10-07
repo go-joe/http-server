@@ -39,6 +39,34 @@ func TestServer_HTTPHandler_GET(t *testing.T) {
 	assert.Equal(t, expectedEvt, events[0])
 }
 
+func TestServer_TrustedHeader(t *testing.T) {
+	brain := joetest.NewBrain(t)
+	conf := config{
+		listenAddr:    "127.0.0.1:0",
+		logger:        zaptest.NewLogger(t),
+		trustedHeader: "x-real-ip",
+	}
+	s := newServer(conf, brain)
+
+	resp := httptest.NewRecorder()
+	req := httptest.NewRequest("GET", "/test", nil)
+	req.Header.Set("x-real-ip", "300.300.300.300")
+	s.HTTPHandler(resp, req)
+
+	brain.Finish()
+	events := brain.RecordedEvents()
+	assert.NotEmpty(t, events)
+
+	expectedEvt := RequestEvent{
+		Header:     req.Header,
+		RemoteAddr: "300.300.300.300:1234",
+		Method:     "GET",
+		URL:        req.URL,
+		Body:       []byte{},
+	}
+	assert.Equal(t, expectedEvt, events[0])
+}
+
 func TestServer_HTTPHandler_POST(t *testing.T) {
 	brain := joetest.NewBrain(t)
 	conf := config{

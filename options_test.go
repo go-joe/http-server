@@ -76,3 +76,11 @@ func TestWithWriteTimeout(t *testing.T) {
 	assert.EqualValues(t, 0, conf.readTimeout)
 	assert.EqualValues(t, 42*time.Second, conf.writeTimeout)
 }
+
+func TestWithTrustedHeader(t *testing.T) {
+	conf, err := newConf("localhost:0", joeConf(t), []Option{
+		WithTrustedHeader("x-real-ip"),
+	})
+	require.NoError(t, err)
+	assert.EqualValues(t, "x-real-ip", conf.trustedHeader)
+}

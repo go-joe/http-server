@@ -19,6 +19,7 @@ type config struct {
 	writeTimeout      time.Duration
 	tlsConf           *tls.Config
 	certFile, keyFile string
+	trustedHeader     string
 }
 
 func newConf(listenAddr string, joeConf *joe.Config, opts []Option) (config, error) {
@@ -95,6 +96,15 @@ func WithReadTimeout(d time.Duration) Option {
 func WithWriteTimeout(d time.Duration) Option {
 	return func(conf *config) error {
 		conf.writeTimeout = d
+		return nil
+	}
+}
+
+// WithTrustedHeader sets the name of the header from which client IPs will be
+// populated.
+func WithTrustedHeader(header string) Option {
+	return func(conf *config) error {
+		conf.trustedHeader = header
 		return nil
 	}
 }

@@ -1,3 +1,5 @@
+// Package joehttp contains an HTTP server integrations for the Joe bot library
+// https://github.com/go-joe/joe
 package joehttp
 
 import (

@@ -5,8 +5,10 @@ package joehttp
 import (
 	"context"
 	"io/ioutil"
+	"net"
 	"net/http"
 	"net/url"
+	"strings"
 	"time"
 
 	"github.com/go-joe/joe"
@@ -96,17 +98,18 @@ func (s *server) Run() {
 // HTTPHandler receives any incoming requests and emits them as events to the
 // bots Brain.
 func (s *server) HTTPHandler(_ http.ResponseWriter, r *http.Request) {
+	clientIP := s.clientAddress(r)
 	s.logger.Debug("Received HTTP request",
 		zap.String("method", r.Method),
 		zap.Stringer("url", r.URL),
-		zap.String("remote_addr", r.RemoteAddr),
+		zap.String("remote_addr", clientIP),
 	)
 
 	event := RequestEvent{
 		Header:     r.Header,
 		Method:     r.Method,
 		URL:        r.URL,
-		RemoteAddr: r.RemoteAddr,
+		RemoteAddr: clientIP,
 	}
 
 	var err error
@@ -131,4 +134,19 @@ func (s *server) Shutdown() {
 	if err != nil {
 		s.logger.Error("Failed to shutdown server", zap.Error(err))
 	}
+}
+
+func (s *server) clientAddress(req *http.Request) string {
+	rip, _, err := net.SplitHostPort(req.RemoteAddr)
+	if err != nil {
+		s.logger.Error("Error parsing RemoteAddr", zap.String("RemoteAddr", req.RemoteAddr))
+		return req.RemoteAddr
+	}
+	ips := req.Header.Get(s.conf.trustedHeader)
+	if ips == "" {
+		return rip
+	}
+	// The n parameter for SplitN is the number of substrings, not how many
+	// to split.
+	return strings.SplitN(ips, ", ", 2)[0]
 }

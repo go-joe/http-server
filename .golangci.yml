@@ -7,8 +7,6 @@ linters-settings:
     min-complexity: 10
   maligned:
     suggest-new: true
-  dupl:
-    threshold: 100
   goconst:
     min-len: 2
     min-occurrences: 2
@@ -36,6 +34,7 @@ linters:
     - prealloc
     - depguard
     - interfacer
+    - dupl
 
 service:
   golangci-lint-version: 1.15.x # use the fixed version to not introduce new linters unexpectedly

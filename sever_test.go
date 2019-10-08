@@ -73,6 +73,7 @@ func TestServer(t *testing.T) {
 	resp, err := http.Post("http://"+addr+"/test", "text/plain", strings.NewReader("foobar"))
 	require.NoError(t, err)
 	assert.Equal(t, http.StatusOK, resp.StatusCode)
+	assert.NoError(t, resp.Body.Close())
 
 	bot.Stop()
 }

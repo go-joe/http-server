@@ -6,6 +6,7 @@ import (
 	"net"
 	"net/http"
 	"net/url"
+	"strings"
 	"time"
 
 	"github.com/go-joe/joe"
@@ -134,14 +135,16 @@ func (s *server) Shutdown() {
 }
 
 func (s *server) clientAddress(req *http.Request) string {
-	rip, port, err := net.SplitHostPort(req.RemoteAddr)
+	rip, _, err := net.SplitHostPort(req.RemoteAddr)
 	if err != nil {
 		s.logger.Error("Error parsing RemoteAddr", zap.String("RemoteAddr", req.RemoteAddr))
 		return req.RemoteAddr
 	}
-	ip := req.Header.Get(s.conf.trustedHeader)
-	if ip == "" {
-		ip = rip
+	ips := req.Header.Get(s.conf.trustedHeader)
+	if ips == "" {
+		return rip
 	}
-	return net.JoinHostPort(ip, port)
+	// The n parameter for SplitN is the number of substrings, not how many
+	// to split.
+	return strings.SplitN(ips, ", ", 2)[0]
 }

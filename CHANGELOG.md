@@ -5,7 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-Nothing so far
+- Add an (optional) trusted header for inferring client IP address behind reverse proxies, load balancers, etc.
 
 ## [v0.4.1] - 2019-04-19
 - Fix wrong default logger name

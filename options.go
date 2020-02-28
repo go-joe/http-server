@@ -2,10 +2,10 @@ package joehttp
 
 import (
 	"crypto/tls"
+	"errors"
 	"time"
 
 	"github.com/go-joe/joe"
-	"github.com/pkg/errors"
 	"go.uber.org/zap"
 )
 

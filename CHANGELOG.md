@@ -5,7 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-Nothing
+- Remove dependency on github.com/pkg/errors
+- Update to Go 1.14
 
 ## [v0.5.0] - 2019-10-08
 - Add an (optional) trusted header for inferring client IP address behind reverse proxies, load balancers, etc.

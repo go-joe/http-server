@@ -91,7 +91,7 @@ func (s *server) Run() {
 	}
 
 	if err != nil && err != http.ErrServerClosed {
-		s.logger.Error("Failed to listen and serve requests", zap.Error(err)) // TODO: we want to see this error at startup!
+		s.logger.Error("Failed to listen and serve requests", zap.Error(err))
 	}
 }
 

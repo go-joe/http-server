@@ -5,7 +5,7 @@
 	<a href="https://circleci.com/gh/go-joe/http-server/tree/master"><img src="https://circleci.com/gh/go-joe/http-server/tree/master.svg?style=shield"></a>
 	<a href="https://goreportcard.com/report/github.com/go-joe/http-server"><img src="https://goreportcard.com/badge/github.com/go-joe/http-server"></a>
     <a href="https://codecov.io/gh/go-joe/http-server"><img src="https://codecov.io/gh/go-joe/http-server/branch/master/graph/badge.svg"/></a>
-	<a href="https://godoc.org/github.com/go-joe/http-server"><img src="https://img.shields.io/badge/godoc-reference-blue.svg?color=blue"></a>
+	<a href="https://pkg.go.dev/github.com/go-joe/http-server?tab=doc"><img src="https://img.shields.io/badge/godoc-reference-blue.svg?color=blue"></a>
 	<a href="https://github.com/go-joe/http-server/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-BSD--3--Clause-blue.svg"></a>
 </p>
 
@@ -54,7 +54,6 @@ When the server receives a request, it will emit it to the bots brain as `joehtt
 ## Built With
 
 * [zap](https://github.com/uber-go/zap) - Blazing fast, structured, leveled logging in Go
-* [pkg/errors](https://github.com/pkg/errors) - Simple error handling primitives
 * [testify](https://github.com/stretchr/testify) - A simple unit test library
 
 ## Contributing
@@ -65,7 +64,7 @@ guide first.
 ## Versioning
 
 We use [SemVer](http://semver.org/) for versioning. For the versions available,
-see the [tags on this repository][tags. 
+see the [tags on this repository][tags]. 
 
 ## Authors
 

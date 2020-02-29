@@ -5,7 +5,7 @@
 	<a href="https://circleci.com/gh/go-joe/http-server/tree/master"><img src="https://circleci.com/gh/go-joe/http-server/tree/master.svg?style=shield"></a>
 	<a href="https://goreportcard.com/report/github.com/go-joe/http-server"><img src="https://goreportcard.com/badge/github.com/go-joe/http-server"></a>
     <a href="https://codecov.io/gh/go-joe/http-server"><img src="https://codecov.io/gh/go-joe/http-server/branch/master/graph/badge.svg"/></a>
-	<a href="https://godoc.org/github.com/go-joe/http-server"><img src="https://img.shields.io/badge/godoc-reference-blue.svg?color=blue"></a>
+	<a href="https://pkg.go.dev/github.com/go-joe/http-server?tab=doc"><img src="https://img.shields.io/badge/godoc-reference-blue.svg?color=blue"></a>
 	<a href="https://github.com/go-joe/http-server/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-BSD--3--Clause-blue.svg"></a>
 </p>
 

@@ -13,11 +13,9 @@
 
 This repository contains a module for the [Joe Bot library][joe].
 
-**THIS SOFTWARE IS STILL IN ALPHA AND THERE ARE NO GUARANTEES REGARDING API STABILITY YET.**
-
 ## Getting Started
 
-This library is packaged using the new [Go modules][go-modules]. You can get it via:
+This library is packaged as [Go module][go-modules]. You can get it via:
 
 ```bash
 go get github.com/go-joe/http-server

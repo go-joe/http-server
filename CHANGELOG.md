@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+- Nothing so far
+
+## [v1.0.0] - 2020-02-29
 - Remove dependency on github.com/pkg/errors
 - Update to Go 1.14
 
@@ -28,7 +31,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Initial alpha release
 
-[Unreleased]: https://github.com/go-joe/http-server/compare/v0.5.0...HEAD
+[Unreleased]: https://github.com/go-joe/http-server/compare/v1.0.0...HEAD
+[v1.0.0]: https://github.com/go-joe/http-server/compare/v0.5.0...v1.0.0
 [v0.5.0]: https://github.com/go-joe/http-server/compare/v0.4.1...v0.5.0
 [v0.4.1]: https://github.com/go-joe/http-server/compare/v0.4.0...v0.4.1
 [v0.4.0]: https://github.com/go-joe/http-server/compare/v0.3.0...v0.4.0
